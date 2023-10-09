@@ -10,7 +10,7 @@
 
 <body>
     <?php
-    $sign_up =false;
+    $sign_up =true;
     ?>
     <nav class="navbar navbar-expand-lg bg-body-tertiary mb-5">
         <div class="container-fluid">
