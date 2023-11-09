@@ -2,14 +2,6 @@
 session_start();
 $errors = [];
 $flag=0;
-$username = null;
-$username_error = null; 
-$password = null;
-$password_error = null;
-$emaill = null;
-$emaill_error = null;
-$file = null;
-$file_error = null;
 $types = ['jpeg', 'jpg', 'png'];
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     if (isset($_FILES['image']) && isset($_POST['UserName']) && isset($_POST['email']) && isset($_POST['password'])) {
@@ -31,44 +23,34 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     move_uploaded_file($tmp_name, 'image/profile' . $name);
                     $flag++;
                 } else {
-                    $file_error = 'Plz upload file image png jpg jpeg';
+                    $errors['types_file']= 'Plz upload file image png jpg jpeg';
                 }
             } else {
-                $file_error = "plz chech  file size max 2 miga ";
+                $errors['size_file']= "plz chech  file size max 2 miga ";
             }
         } else {
-            $file_error = 'file empty';
+            $errors['empty_file']= 'file empty';
         }
     }
     if (!empty($un)) {
         if (preg_match('@^[A-Z][a-z]@', $un)) {
             $flag++;
         } else {
-            $username_error = 'Plz enter start name A-Z';
+            $errors['name_start'] = 'Plz enter start name A-Z';
         }
     } else {
-        $username_error = "Username field is empty";
+        $errors['name_empty']= "Username field is empty";
         }
 
-    if (!empty($emai)) {
-        
-        $username = $_POST['UserName'];
-        $emailDomain = 'mahmoud.com';
-        
-        $email = $username . '@' . $emailDomain;
-        
-        
-        $pattern = '/^\w+@\w+\.\w+$/';
-        if (preg_match($pattern, $email)) {
-            $flag++;
-    
+        if (!empty($emai)) {
+            if (filter_var($emai, FILTER_VALIDATE_EMAIL)) {
+                $flag++;
+            } else {
+                $errors['email_format'] = 'Invalid email format.';
+            }
         } else {
-            $emaill_error = 'Plz enter end email @mahmoud.com';
+            $errors['email_empty'] = 'Email cannot be empty.';
         }
-        
-    } else {
-        $emaill_error = 'Plz enter email';
-    }
 
     if (!empty($pass)) {
         if (strlen($pass) > 5 && strlen($pass) < 20) {
@@ -76,13 +58,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 $flag++;
             } else {
 
-                $password_error = 'Plz enter correct password';
+                $errors['pass'] ='Plz enter correct password';
             }
         } else {
-            $password_error = 'Plz enter password min 5 max10';
+            $errors['pass_size'] = 'Plz enter password min 5 max10';
         }
     } else {
-        $password_error = 'Plz enter password';
+        $errors['pass_empty']= 'Plz enter password';
     }
     if($flag==4){
         header('location:login.php');
@@ -108,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     <?php if (!empty($errors)) : ?>
         <?php foreach ($errors as $error) : ?>
             <div class="alert alert-danger" role="alert">
-               
+                <?=$error?>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
@@ -117,37 +99,44 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         <h1>Register</h1>
 
 
-        <input type="text" name="UserName" id=""  value="<?php echo $username; ?>">userName
-        <?php if (!empty($username_error)) : ?>
-        <p class="error username-error  alert alert-danger">
-         <?php echo $username_error; ?>
-      </p>
-      <?php endif;?>
+        <input type="text" name="UserName" id=""  >userName
+        <?php if (!empty($errors)) : ?>
+        <?php foreach ($errors as $error) : ?>
+            <div class="alert alert-danger" role="alert">
+                <?=$error?>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
 
         <br>
-        <input type="email" name="email" id="" value="<?php echo $emaill; ?>">Email
-        <?php if (!empty($emaill_error)) : ?>
-        <p class="error password-error alert alert-danger">
-      <?php echo $emaill_error; ?>
-        </p>
-        <?php endif;?>
+        <input type="email" name="email" id="" >Email
+        <?php if (!empty($errors)) : ?>
+        <?php foreach ($errors as $error) : ?>
+            <div class="alert alert-danger" role="alert">
+                <?=$error?>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
         <br>
     
-        <input type="password" name="password" id="" value="<?php echo $password; ?>">Password
-        <?php if (!empty($password_error)) : ?>
-        <p class="error password-error  alert alert-danger">
-      <?php echo $password_error; ?>
-        </p>
-        <?php endif;?>
-
+        <input type="password" name="password" id="" >Password
+        <?php if (!empty($errors)) : ?>
+        <?php foreach ($errors as $error) : ?>
+            <div class="alert alert-danger" role="alert">
+                <?=$error?>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
         <br>
         
-        <input type="file" name="image" id="" value="<?php echo $file; ?>">
-        <?php if (!empty($file_error)) : ?>
-        <p class="error file-error  alert alert-danger">
-      <?php echo $file_error; ?>
-        </p>
-        <?php endif;?>
+        <input type="file" name="image" id="" >
+        <?php if (!empty($errors)) : ?>
+        <?php foreach ($errors as $error) : ?>
+            <div class="alert alert-danger" role="alert">
+                <?=$error?>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
 
         <button>
             Login
