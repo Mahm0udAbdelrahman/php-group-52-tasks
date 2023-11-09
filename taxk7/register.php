@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $un = $_POST['UserName'];
             $emai = $_POST['email'];
             $pass = $_POST['password'];
-            if ($size < 1234566) {
+            if ($size < 2097152) {
                 $explode = explode('.', $name);
                 $en = end($explode);
                 $strlen = strtolower($en);
