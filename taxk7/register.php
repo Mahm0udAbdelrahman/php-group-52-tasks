@@ -1,6 +1,9 @@
 <?php
 session_start();
 $errors = [];
+$errorss = [];
+$errorsss = [];
+$errorssss = [];
 $flag=0;
 $types = ['jpeg', 'jpg', 'png'];
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
@@ -36,20 +39,20 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         if (preg_match('@^[A-Z][a-z]@', $un)) {
             $flag++;
         } else {
-            $errors['name_start'] = 'Plz enter start name A-Z';
+            $errorss['name_start'] = 'Plz enter start name A-Z';
         }
     } else {
-        $errors['name_empty']= "Username field is empty";
+        $errorss['name_empty']= "Username field is empty";
         }
 
         if (!empty($emai)) {
             if (filter_var($emai, FILTER_VALIDATE_EMAIL)) {
                 $flag++;
             } else {
-                $errors['email_format'] = 'Invalid email format.';
+                $errorsss['email_format'] = 'Invalid email format.';
             }
         } else {
-            $errors['email_empty'] = 'Email cannot be empty.';
+            $errorsss['email_empty'] = 'Email cannot be empty.';
         }
 
     if (!empty($pass)) {
@@ -58,13 +61,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 $flag++;
             } else {
 
-                $errors['pass'] ='Plz enter correct password';
+                $errorssss['pass'] ='Plz enter correct password';
             }
         } else {
-            $errors['pass_size'] = 'Plz enter password min 5 max10';
+            $errorssss['pass_size'] = 'Plz enter password min 5 max10';
         }
     } else {
-        $errors['pass_empty']= 'Plz enter password';
+        $errorssss['pass_empty']= 'Plz enter password';
     }
     if($flag==4){
         header('location:login.php');
@@ -87,13 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 </head>
 
 <body>
-    <?php if (!empty($errors)) : ?>
-        <?php foreach ($errors as $error) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?=$error?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+    
     <form method="post" enctype="multipart/form-data">
 
         <h1>Register</h1>
@@ -110,30 +107,30 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
         <br>
         <input type="email" name="email" id="" >Email
-        <?php if (!empty($errors)) : ?>
-        <?php foreach ($errors as $error) : ?>
+        <?php if (!empty($errorss)) : ?>
+        <?php foreach ($errorss as $errorr) : ?>
             <div class="alert alert-danger" role="alert">
-                <?=$error?>
+                <?=$errorr?>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
         <br>
     
         <input type="password" name="password" id="" >Password
-        <?php if (!empty($errors)) : ?>
-        <?php foreach ($errors as $error) : ?>
+        <?php if (!empty($errorsss)) : ?>
+        <?php foreach ($errorsss as $errorrr) : ?>
             <div class="alert alert-danger" role="alert">
-                <?=$error?>
+                <?=$errorrr?>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
         <br>
         
         <input type="file" name="image" id="" >
-        <?php if (!empty($errors)) : ?>
-        <?php foreach ($errors as $error) : ?>
+        <?php if (!empty($errorssss)) : ?>
+        <?php foreach ($errorssss as $errorrrr) : ?>
             <div class="alert alert-danger" role="alert">
-                <?=$error?>
+                <?=$errorrrr?>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>

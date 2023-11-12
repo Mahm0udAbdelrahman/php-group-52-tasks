@@ -2,6 +2,7 @@
 session_start();
 $flag = 0;
 $errors = [];
+$errorss = [];
 require_once('data.php');
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     if (isset($_POST['email']) && isset($_POST['password'])) {
@@ -25,13 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                     echo 'trrsd';
                 } else {
 
-                    $errors['pass'] = 'Plz enter correct password';
+                    $errorss['pass'] = 'Plz enter correct password';
                 }
             } else {
-                $errors['pass_size'] = 'Plz enter password min 5 max10';
+                $errorss['pass_size'] = 'Plz enter password min 5 max10';
             }
         } else {
-            $errors['pass_empty'] = 'Plz enter password';
+            $errorss['pass_empty'] = 'Plz enter password';
         }
         foreach ($usres as $user) {
             if ($user['email'] == $email && $user['pas'] == $passw) {
@@ -73,10 +74,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     <?php endif; ?>
         <br>
         <input type="password" name="password" id="" >Password
-        <?php if (!empty($errors)) : ?>
-        <?php foreach ($errors as $error) : ?>
+        <?php if (!empty($errorss)) : ?>
+        <?php foreach ($errorss as $errorr) : ?>
             <div class="alert alert-danger" role="alert">
-                <?= $error ?>
+                <?= $errorr ?>
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
