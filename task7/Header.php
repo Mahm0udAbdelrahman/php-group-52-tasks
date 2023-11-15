@@ -15,7 +15,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
       <a class="navbar-brand" href="#">
-        <?php if(isset($_SESSION['Welcome_email']))  :?>
+        <?php if(isset($_SESSION['Welcome_email'])) :?>
 
         <?= $_SESSION['Welcome_name']?>
         <br>
@@ -23,7 +23,6 @@
         <?php else : ?>
         <h1><?='Plz first login' ?></h1>
         <?php endif ;?>
-
     </a>
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
