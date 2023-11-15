@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $error = $file['error'];
             $size = $file['size'];
             $count = count($size);
-            $doc = $_SERVER["DOCUMENT_ROOT"] . '/trianing/php-group-52-tasks/taxk7/image/';
+            $doc = $_SERVER["DOCUMENT_ROOT"] . '/trianing/php-group-52-tasks/task7/image/';
             for ($i = 0; $i < $count; $i++) {
                 $explode = explode('.', $name[$i]);
                 $en = end($explode);
