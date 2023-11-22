@@ -3,25 +3,20 @@ session_start();
 $flag = 0;
 $errors = [];
 $errorss = [];
-$errorsss = [];
 $errorssss = [];
 $errorsssss = [];
 $errorssssss = [];
 
-$allowed_types = ['jpg', 'png', 'jpeg'];
+
+
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
-    if (isset($_POST['User']) && $_POST['email'] && $_POST['type'] && $_POST['pass'] && $_POST['passtwo'] && $_FILES['file']) {
+    if (isset($_POST['User']) && isset($_POST['email']) && isset($_POST['type']) && isset($_POST['pass']) && isset($_POST['passtwo'])) {
         $name = $_POST['User'];
         $email = $_POST['email'];
         $type = $_POST['type'];
         $pass = $_POST['pass'];
         $passtwo = $_POST['passtwo'];
-        $file = $_FILES['file'];
-        $nam_file = $file['name'];
-        $size_file = $file['size'];
-        $tmp_f_name = $file['tmp_name'];
-        $type_file = $file['type'];
-        $error_file = $file['error'];
+       
 
 
         if (!empty($name)) {
@@ -47,32 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         } else {
             $errorss['email_empty'] = 'Email cannot be empty.';
         }
-        if ($error_file != 4) {
-            if ($size_file < 2097152) {
-                $explode = explode('.', $nam_file);
-                $end = end($explode);
-                $strlen = strtolower($end);
-                if (in_array($strlen, $allowed_types)) {
-                    move_uploaded_file($tmp_f_name, 'uploads/profile' . $nam_file);
-                    $flag++;
-                } else {
-                    $errorsss['types_file'] = 'Invalid image type. Only JPEG, PNG, and JPG are allowed.';
-                }
-            } else {
-                $errorsss['size_file'] = 'Image is too large. Maximum size is 1.5 megabytes.';
-            }
-        } else {
-            $errorsss['error_file'] = "Error uploading image.";
-        }
-        // $adim='';
-        // $user='';
-        // if($_POST['types']['Admin']==true){
-        //     header("location:dashboard/index.html");  
-        //     $flag++;  
-        // }else{
-        //     header("location:front/index.html");    
 
-        // }
         if (!empty($pass)) {
             if (strlen($pass) > 8) {
                 if (preg_match('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', $pass)) {
@@ -91,15 +61,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         } else {
             $errorsssss['passtwo'] = "Passwords do not match.";
         }
-        if ($flag == 5) {
-            header('location:login.php');
-        }
+       
     }else{
     $errorssssss['all'] = "Plz enter info.";
     }
+
+    
+      if ($flag == 4 ) {
+         $connect = mysqli_connect('localhost','root','','task_eleven',3306);
+         $stat = "INSERT INTO users(user_name,email,password,gender) VALUES('$_POST[User]','$_POST[email]','$_POST[pass]', '$_POST[type]')";
+         $excute = mysqli_query($connect , $stat);
+              header('location:all_users.php');
+         }
 }
-
-
 ?>
 
 
@@ -278,7 +252,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" >
         <h3>Register Here</h3>
         <?php if (!empty($errorssssss)) : ?>
         <?php foreach ($errorssssss as $errorrrrrr) : ?>
@@ -326,21 +300,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
 
 
-        <label for="img">Profile Image</label>
-        <input type="file" id="img" name="file">
-        <?php if (!empty($errorsss)) : ?>
-        <?php foreach ($errorsss as $errorrr) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $errorrr ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+        
 
 
 
-        <label for="username">User Type</label>
-        <input type="radio" name="type"><span class="spn-radio">Admin</span>
-        <input type="radio" name="type"><span class="spn-radio">User</span>
+        <label for="username">Gender</label>
+        <input type="radio" value="Male" name="type"><span class="spn-radio">Male</span>
+        <input type="radio" value="Female" name="type"><span class="spn-radio">Female</span>
 
 
         <label for="password">Password</label>

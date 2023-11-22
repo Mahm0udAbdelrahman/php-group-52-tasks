@@ -3,6 +3,7 @@ session_start();
 
 $errors = [];
 $errorss = [];
+$errorsss = [];
 
 require_once('data/data.php');
 
@@ -60,7 +61,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             }
         }
         
-    }
+    }else{
+        $errorsss['all'] = "Plz enter info.";
+        }
 }
 
 ?>
@@ -226,6 +229,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     </div>
     <form method="POST">
         <h3>Login Here</h3>
+        <?php if (!empty($errorsss)) : ?>
+        <?php foreach ($errorsss as $errorrr) : ?>
+            <div class="alert alert-danger" role="alert">
+                <?= $errorrr ?>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
 
         <label for="username">Username Or Email</label>
         <input type="text" placeholder="Email or Username" id="username" name="User">

@@ -77,10 +77,10 @@ session_start();
                                 </div>
                                 <div class="header__btn d-none d-md-block">
                             <?php if(isset($_SESSION['Welcome_name'])) :?>
-                                    <a href="" class="btn" href="../logout.php">Logout</a>
+                                    <a href="" class="btn" href="/logout.php">Logout</a>
                                     <?php else : ?>
-                                    <a href="" class="btn" href='../login.php' >Login</a>
-                                    <a href="" class="btn" href='../register.php'>Register</a>
+                                    <a href="" class="btn" href='/login.php' >Login</a>
+                                    <a href="" class="btn" href='/register.php'>Register</a>
                                     <?php endif;?>
                                 </div>
                             </nav>
