@@ -1,122 +1,19 @@
 <?php
-session_start();
-$flag = 0;
-$errors = [];
-$errorss = [];
-$errorsss = [];
-$errorssss = [];
-$errorsssss = [];
-$errorssssss = [];
-
-$allowed_types = ['jpg', 'png', 'jpeg'];
-if ($_SERVER["REQUEST_METHOD"] == 'POST') {
-    if (isset($_POST['User']) && $_POST['email'] && $_POST['type'] && $_POST['pass'] && $_POST['passtwo'] && $_FILES['file']) {
-        $name = $_POST['User'];
-        $email = $_POST['email'];
-        $type = $_POST['type'];
-        $pass = $_POST['pass'];
-        $passtwo = $_POST['passtwo'];
-        $file = $_FILES['file'];
-        $nam_file = $file['name'];
-        $size_file = $file['size'];
-        $tmp_f_name = $file['tmp_name'];
-        $type_file = $file['type'];
-        $error_file = $file['error'];
-
-
-        if (!empty($name)) {
-            if (strlen($name) > 5 && strlen($name) < 20) {
-                if (preg_match("/^[a-zA-Z0-9_]*$/", $name) && !preg_match("/^' '$/", $name)) {
-                    $flag++;
-                } else {
-                    $errors['name_letters'] = 'Username can only contain letters, numbers, and underscores.';
-                }
-            } else {
-                $errors['name_long'] = 'Username must be between 5 and 20 characters long.';
-            }
-        } else {
-            $errors['name_empty'] = 'Username cannot be empty.';
-        }
-
-        if (!empty($email)) {
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $flag++;
-            } else {
-                $errorss['email_format'] = 'Invalid email format.';
-            }
-        } else {
-            $errorss['email_empty'] = 'Email cannot be empty.';
-        }
-        if ($error_file != 4) {
-            if ($size_file < 2097152) {
-                $explode = explode('.', $nam_file);
-                $end = end($explode);
-                $strlen = strtolower($end);
-                if (in_array($strlen, $allowed_types)) {
-                    move_uploaded_file($tmp_f_name, 'uploads/profile' . $nam_file);
-                    $flag++;
-                } else {
-                    $errorsss['types_file'] = 'Invalid image type. Only JPEG, PNG, and JPG are allowed.';
-                }
-            } else {
-                $errorsss['size_file'] = 'Image is too large. Maximum size is 1.5 megabytes.';
-            }
-        } else {
-            $errorsss['error_file'] = "Error uploading image.";
-        }
-        // $adim='';
-        // $user='';
-        // if($_POST['types']['Admin']==true){
-        //     header("location:dashboard/index.html");  
-        //     $flag++;  
-        // }else{
-        //     header("location:front/index.html");    
-
-        // }
-        if (!empty($pass)) {
-            if (strlen($pass) > 8) {
-                if (preg_match('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', $pass)) {
-                    $flag++;
-                } else {
-                    $errorssss['pass_letter'] = "Password can only contain letters, numbers, and underscores.";
-                }
-            } else {
-                $errorssss['pass_len'] = "Password must be at least 8 characters long.";
-            }
-        } else {
-            $errorssss['pass_empty'] = "Password cannot be empty.";
-        }
-        if ($pass == $passtwo) {
-            $flag++;
-        } else {
-            $errorsssss['passtwo'] = "Passwords do not match.";
-        }
-        if ($flag == 5) {
-            header('location:login.php');
-        }
-    }else{
-    $errorssssss['all'] = "Plz enter info.";
-    }
-}
-
-
+session_start(); 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <!-- Design by foolishdeveloper.com -->
     <title>Glassmorphism login Form Tutorial in html css</title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
     <!--Stylesheet-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <style media="screen">
         *,
@@ -272,21 +169,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 </head>
 
 <body>
-   
-
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" action="handle/Regist.php">
         <h3>Register Here</h3>
-        <?php if (!empty($errorssssss)) : ?>
-        <?php foreach ($errorssssss as $errorrrrrr) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $errorrrrrr ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+        
+
 
         <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
             <symbol id="check-circle-fill" viewBox="0 0 16 16">
@@ -299,78 +189,59 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                 <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
             </symbol>
         </svg>
+        
 
         <label for="username">Username</label>
-        <input type="text" placeholder="username" id="username" name="User">
-         <?php if (!empty($errors)) : ?>
-        <?php foreach ($errors as $error) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $error ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+        <input type="text" placeholder="username" name="User_name" id="username">
 
 
+        
+        <?php if (!empty($_SESSION['error_name'])) : ?>
+            <?php foreach ($_SESSION['error_name'] as $values) : ?>
+                <div class="alert alert-primary" role="alert">
+                    <?= $values ?>
+                </div>
+            <?php endforeach ?>
+        <?php endif ?>
 
-
-
-        <label for="email">Email</label>
-        <input type="text" placeholder="email" id="email" name="email">
-         <?php if (!empty($errorss)) : ?>
-        <?php foreach ($errorss as $errorr) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $errorr ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
-
+        
 
 
         <label for="img">Profile Image</label>
-        <input type="file" id="img" name="file">
-        <?php if (!empty($errorsss)) : ?>
-        <?php foreach ($errorsss as $errorrr) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $errorrr ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+        <input type="file" id="img" name="image">
 
 
+        <?php if (!empty($_SESSION['error_image'])) : ?>
+            <?php foreach ($_SESSION['error_image'] as $value) : ?>
+                <div class="alert alert-primary" role="alert">
+                    <?= $value ?>
+                </div>
+            <?php endforeach ?>
+        <?php endif ?>
 
-        <label for="username">User Type</label>
-        <input type="radio" name="type"><span class="spn-radio">Admin</span>
-        <input type="radio" name="type"><span class="spn-radio">User</span>
 
 
         <label for="password">Password</label>
-        <input type="password" placeholder="Password" id="password" name="pass">
-        <?php if (!empty($errorssss)) : ?>
-        <?php foreach ($errorssss as $errorrrr) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $errorrrr ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+        <input type="password" placeholder="Password" name="pass" id="password">
 
 
-        <label for="co-password">confirm Password</label>
-
-        <input type="password" placeholder="Confirm Password" id="co-password" name="passtwo">
-         <?php if (!empty($errorsssss)) : ?>
-        <?php foreach ($errorsssss as $errorrrrr) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $errorrrrr ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+        <?php if (!empty($_SESSION['error_pass'])) : ?>
+            <?php foreach ($_SESSION['error_pass'] as $values) : ?>
+                <div class="alert alert-primary" role="alert">
+                    <?= $values ?>
+                </div>
+            <?php endforeach ?>
+        <?php endif ?>
 
 
         <button>Log In</button>
         <div class="social">
-            <div class="go"><i class="fab fa-google"></i> login </div>
+            <div class="go"><i class="fab fa-google"></i> <a href="login.php" class="btn" >login</a> </div>
         </div>
     </form>
 </body>
 
 </html>
+ <?php
+ session_destroy();
+ ?>

@@ -1,75 +1,7 @@
 <?php
 session_start();
 
-$errors = [];
-$errorss = [];
-$errorsss = [];
-
-require_once('data/data.php');
-
-if ($_SERVER["REQUEST_METHOD"] == 'POST') {
-    if ((isset($_POST['User']) && $_POST['pass'])) {
-        $name = $_POST['User'];
-        $pass = $_POST['pass'];
-        
-
-
-
-        if (!empty($name)) {
-            if (strlen($name) > 5 && strlen($name) < 20) {
-                if (preg_match("/^[a-zA-Z0-9_]*$/", $name) && !preg_match("/^' '$/", $name)) {
-                    echo 'ok';
-                } else {
-                    $errors['name_letters'] = 'Username can only contain letters, numbers, and underscores.';
-                }
-            } else {
-                $errors['name_long'] = 'Username must be between 5 and 20 characters long.';
-            }
-        } else {
-            $errors['name_empty'] = 'Username cannot be empty.';
-        }
-
-        
-
-        if (!empty($pass)) {
-            if (strlen($pass) > 8) {
-                if (preg_match('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', $pass)) {
-                    echo 'okokok';
-                } else {
-                    $errorss['pass_letter'] = "Password can only contain letters, numbers, and underscores.";
-                }
-            } else {
-                $errorss['pass_len'] = "Password must be at least 8 characters long.";
-            }
-        } else {
-            $errorss['pass_empty'] = "Password cannot be empty.";
-        }
-        foreach ($users as $userr) {
-            if ($userr['name'] == $name && $userr['passw'] == $pass) {
-                $_SESSION['Welcome_name'] = $userr['name'];
-
-                
-                header("location:front/index.php");
-            }
-        }
-        foreach ($adims as $adim) {
-            if ($adim['name'] == $name && $adim['passw'] == $pass) {
-                
-                $_SESSION['Welcome_name'] = $adim['name'];
-            
-                header("location:dashboard/index.php");
-            }
-        }
-        
-    }else{
-        $errorsss['all'] = "Plz enter info.";
-        }
-}
-
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -220,48 +152,57 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         }
     </style>
 </head>
+<?Php
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+    
+        $name = $_POST['User_name'];
+        $pass = $_POST['pass'];
+
+        $conn = mysqli_connect('localhost', 'root', '', 'dashboard');
+        $stat = 'select * from task';
+        $quary = mysqli_query($conn, $stat);
+        while ($row = mysqli_fetch_assoc($quary)) {
+            if ($row['name'] == $name && $row['password'] == $pass) {
+                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['user_name'] = $row['name'];
+                $_SESSION['user_type'] = $row['type'];
+                if ($row['type'] == 'normal_user') {
+                    header('location:front/index.php');
+                } else {
+                    header('location:dashboard/index.php');
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+?>
 
 <body>
-    
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
     <form method="POST">
         <h3>Login Here</h3>
-        <?php if (!empty($errorsss)) : ?>
-        <?php foreach ($errorsss as $errorrr) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $errorrr ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
 
         <label for="username">Username Or Email</label>
-        <input type="text" placeholder="Email or Username" id="username" name="User">
-        <?php if (!empty($errors)) : ?>
-        <?php foreach ($errors as $error) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $error ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+        <input type="text" placeholder="Email or Username" name="User_name" id="username">
 
         <label for="password">Password</label>
-        <input type="password" placeholder="Password" id="password" name="pass">
-        <?php if (!empty($errorss)) : ?>
-        <?php foreach ($errorss as $errorr) : ?>
-            <div class="alert alert-danger" role="alert">
-                <?= $errorr ?>
-            </div>
-        <?php endforeach; ?>
-    <?php endif; ?>
+        <input type="password" placeholder="Password" name="pass" id="password">
 
         <button>Log In</button>
         <div class="social">
-            <div class="go"><i class="fab fa-google"></i> Register </div>
+            <div class="go"><i class="fab fa-google"></i> <a href="register.php" class="btn">Register</a> </div>
         </div>
     </form>
 </body>
 
 </html>
+

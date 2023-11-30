@@ -1,6 +1,12 @@
 <?php
 session_start();
+if(isset($_SESSION['user_id'])){
+    $conn = mysqli_connect('localhost', 'root', '', 'dashboard');
+        $stat = "select * from task where id = $_SESSION[user_id]";
+        $quary = mysqli_query($conn, $stat);
+        $data=mysqli_fetch_assoc($quary);
 
+}
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
@@ -50,14 +56,13 @@ session_start();
                         <div class="menu__wrap">
                             <nav class="menu__nav">
                                 <div class="logo">
-                                    <a href="index.html" class="logo__black"><img src="assets/img/logo/logo_black.png"
-                                            alt=""></a>
-                                    <a href="index.html" class="logo__white"><img src="assets/img/logo/logo_white.png"
-                                            alt=""></a>
+                                    <a href="index.html" class="logo__black"><img src="assets/img/logo/logo_black.png" alt=""></a>
+                                    <a href="index.html" class="logo__white"><img src="assets/img/logo/logo_white.png" alt=""></a>
                                 </div>
                                 <div class="navbar__wrap main__menu d-none d-xl-flex">
                                     <ul class="navigation">
-                                        <li class="active"><a href="index.html">Home</a></li>
+                                        
+                                        <li class="active"><a href="index.html"> Home</a></li>
                                         <li><a href="about.html">About</a></li>
                                         <li><a href="services-details.html">Services</a></li>
                                         <li class="menu-item-has-children"><a href="#">Portfolio</a>
@@ -76,12 +81,12 @@ session_start();
                                     </ul>
                                 </div>
                                 <div class="header__btn d-none d-md-block">
-                            <?php if(isset($_SESSION['Welcome_name'])) :?>
-                                    <a href="" class="btn" href="/logout.php">Logout</a>
+                                <?php if(isset($_SESSION['user_id'])) : ?>
+                                        <a href="../logout.php" class="btn">Logout</a>
                                     <?php else : ?>
-                                    <a href="" class="btn" href='/login.php' >Login</a>
-                                    <a href="" class="btn" href='/register.php'>Register</a>
-                                    <?php endif;?>
+                                        <a href="../login.php" class="btn">Login</a>
+                                        <a href="../register.php" class="btn">Register</a>
+                                    <?php endif; ?>
                                 </div>
                             </nav>
                         </div>
@@ -90,10 +95,8 @@ session_start();
                             <nav class="menu__box">
                                 <div class="close__btn"><i class="fal fa-times"></i></div>
                                 <div class="nav-logo">
-                                    <a href="index.html" class="logo__black"><img src="assets/img/logo/logo_black.png"
-                                            alt=""></a>
-                                    <a href="index.html" class="logo__white"><img src="assets/img/logo/logo_white.png"
-                                            alt=""></a>
+                                    <a href="index.html" class="logo__black"><img src="assets/img/logo/logo_black.png" alt=""></a>
+                                    <a href="index.html" class="logo__white"><img src="assets/img/logo/logo_white.png" alt=""></a>
                                 </div>
                                 <div class="menu__outer">
                                     <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
@@ -127,7 +130,7 @@ session_start();
                 <div class="row align-items-center justify-content-center justify-content-lg-between">
                     <div class="col-lg-6 order-0 order-lg-2">
                         <div class="banner__img text-center text-xxl-end">
-                            <img src="assets/img/banner/banner_img.png" alt="">
+                            <img src="../uploads/profile/<?=$data['image'] ?? 'default.png' ?>" alt="">
                         </div>
                     </div>
                     <div class="col-xl-5 col-lg-6">
@@ -146,8 +149,7 @@ session_start();
                 <a href="#aboutSection" class="scroll__link">Scroll down</a>
             </div>
             <div class="banner__video">
-                <a href="https://www.youtube.com/watch?v=XHOmBV4js_E" class="popup-video"><i
-                        class="fas fa-play"></i></a>
+                <a href="https://www.youtube.com/watch?v=XHOmBV4js_E" class="popup-video"><i class="fas fa-play"></i></a>
 
         </section>
         <!-- banner-area-end -->
@@ -234,8 +236,7 @@ session_start();
                     <div class="col-xl-3">
                         <div class="services__item">
                             <div class="services__thumb">
-                                <a href="services-details.html"><img src="assets/img/images/services_img01.jpg"
-                                        alt=""></a>
+                                <a href="services-details.html"><img src="assets/img/images/services_img01.jpg" alt=""></a>
                             </div>
                             <div class="services__content">
                                 <div class="services__icon">
@@ -258,8 +259,7 @@ session_start();
                     <div class="col-xl-3">
                         <div class="services__item">
                             <div class="services__thumb">
-                                <a href="services-details.html"><img src="assets/img/images/services_img02.jpg"
-                                        alt=""></a>
+                                <a href="services-details.html"><img src="assets/img/images/services_img02.jpg" alt=""></a>
                             </div>
                             <div class="services__content">
                                 <div class="services__icon">
@@ -282,8 +282,7 @@ session_start();
                     <div class="col-xl-3">
                         <div class="services__item">
                             <div class="services__thumb">
-                                <a href="services-details.html"><img src="assets/img/images/services_img03.jpg"
-                                        alt=""></a>
+                                <a href="services-details.html"><img src="assets/img/images/services_img03.jpg" alt=""></a>
                             </div>
                             <div class="services__content">
                                 <div class="services__icon">
@@ -306,8 +305,7 @@ session_start();
                     <div class="col-xl-3">
                         <div class="services__item">
                             <div class="services__thumb">
-                                <a href="services-details.html"><img src="assets/img/images/services_img04.jpg"
-                                        alt=""></a>
+                                <a href="services-details.html"><img src="assets/img/images/services_img04.jpg" alt=""></a>
                             </div>
                             <div class="services__content">
                                 <div class="services__icon">
@@ -330,8 +328,7 @@ session_start();
                     <div class="col-xl-3">
                         <div class="services__item">
                             <div class="services__thumb">
-                                <a href="services-details.html"><img src="assets/img/images/services_img03.jpg"
-                                        alt=""></a>
+                                <a href="services-details.html"><img src="assets/img/images/services_img03.jpg" alt=""></a>
                             </div>
                             <div class="services__content">
                                 <div class="services__icon">
@@ -440,37 +437,27 @@ session_start();
                     <div class="col-xl-10 col-lg-12">
                         <ul class="nav nav-tabs portfolio__nav" id="portfolioTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all"
-                                    type="button" role="tab" aria-controls="all" aria-selected="true">All</button>
+                                <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">All</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="website-tab" data-bs-toggle="tab" data-bs-target="#website"
-                                    type="button" role="tab" aria-controls="website"
-                                    aria-selected="false">website</button>
+                                <button class="nav-link" id="website-tab" data-bs-toggle="tab" data-bs-target="#website" type="button" role="tab" aria-controls="website" aria-selected="false">website</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="apps-tab" data-bs-toggle="tab" data-bs-target="#apps"
-                                    type="button" role="tab" aria-controls="apps" aria-selected="false">mobile
+                                <button class="nav-link" id="apps-tab" data-bs-toggle="tab" data-bs-target="#apps" type="button" role="tab" aria-controls="apps" aria-selected="false">mobile
                                     apps</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab"
-                                    data-bs-target="#dashboard" type="button" role="tab" aria-controls="dashboard"
-                                    aria-selected="false">Dashboard</button>
+                                <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Dashboard</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="landing-tab" data-bs-toggle="tab" data-bs-target="#landing"
-                                    type="button" role="tab" aria-controls="landing" aria-selected="false">landing
+                                <button class="nav-link" id="landing-tab" data-bs-toggle="tab" data-bs-target="#landing" type="button" role="tab" aria-controls="landing" aria-selected="false">landing
                                     page</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="branding-tab" data-bs-toggle="tab"
-                                    data-bs-target="#branding" type="button" role="tab" aria-controls="branding"
-                                    aria-selected="false">Branding</button>
+                                <button class="nav-link" id="branding-tab" data-bs-toggle="tab" data-bs-target="#branding" type="button" role="tab" aria-controls="branding" aria-selected="false">Branding</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="graphic-tab" data-bs-toggle="tab" data-bs-target="#graphic"
-                                    type="button" role="tab" aria-controls="graphic" aria-selected="false">Graphic
+                                <button class="nav-link" id="graphic-tab" data-bs-toggle="tab" data-bs-target="#graphic" type="button" role="tab" aria-controls="graphic" aria-selected="false">Graphic
                                     Design</button>
                             </li>
                         </ul>
