@@ -8,7 +8,6 @@ if($_GET['myId']){
 }
 if($_POST['username']){
     $upd = "update task set name = '$_POST[username]' , password = '$_POST[password]' , type='$_POST[type]' where id = $_GET[myId] ";
-
     $quaarry=mysqli_query($conn,$upd);
     header('location:users.php');
 }
